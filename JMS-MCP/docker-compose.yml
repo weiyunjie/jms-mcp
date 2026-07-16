@@ -1,0 +1,35 @@
+services:
+  jms-mcp:
+    build: .
+    image: jms-mcp-server:latest
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-8000}:8000"
+    environment:
+      # JumpServer connection (see docs/setup.md)
+      jumpserver_url: "${JUMPSERVER_URL:?set JUMPSERVER_URL}"
+      access_key_id: "${ACCESS_KEY_ID:-}"
+      access_key_secret: "${ACCESS_KEY_SECRET:-}"
+      api_token: "${API_TOKEN:-}"
+      # MCP gateway key callers present as `Authorization: Bearer <api_key>`
+      api_key: "${API_KEY:?set API_KEY}"
+      base_path: "/mcp"
+      server_port: "8000"
+      # Security / behavior tunables (optional; defaults shown in docs/setup.md)
+      policy_mode: "${POLICY_MODE:-blacklist}"
+      policy_config_path: "${POLICY_CONFIG_PATH:-}"
+      session_idle_timeout_seconds: "${SESSION_IDLE_TIMEOUT_SECONDS:-900}"
+      max_concurrent_jobs: "${MAX_CONCURRENT_JOBS:-10}"
+      approval_timeout_seconds: "${APPROVAL_TIMEOUT_SECONDS:-300}"
+      max_output_bytes: "${MAX_OUTPUT_BYTES:-104857600}"
+      audit_db_path: "/data/jms_mcp_audit.sqlite3"
+      batch_spill_dir: "/data/batch_results"
+      log_level: "${LOG_LEVEL:-INFO}"
+    volumes:
+      # Persist the audit DB and spilled batch results across restarts.
+      - jms-mcp-data:/data
+      # Optional: mount an admin-managed policy file (read-only).
+      # - ./policy.json:/app/policy.json:ro
+
+volumes:
+  jms-mcp-data:

@@ -1,0 +1,34 @@
+[project]
+name = "jms-mcp-server"
+version = "0.1.0"
+description = "JumpServer MCP server with Access Key auth support"
+readme = "README.md"
+authors = [{ name = "JumpServer MCP contributors" }]
+requires-python = ">=3.11"
+dependencies = [
+    # 0.4.0 introduces mount_http() (Streamable HTTP transport); it pulls a
+    # newer mcp core that ships the HTTP session manager, so mcp is left
+    # unpinned here and constrained transitively by fastapi-mcp.
+    "fastapi-mcp==0.4.0",
+    "fastapi",
+    "uvicorn",
+    "httpx",
+    "pydantic-settings",
+]
+
+[project.optional-dependencies]
+# Optional: better non-UTF-8 detection in the encoding pipeline.
+encoding = ["charset-normalizer"]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "respx",
+    "httpx",
+]
+
+[project.scripts]
+jms-mcp-server = "jumpserver_mcp_server.__main__:main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

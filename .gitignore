@@ -1,0 +1,44 @@
+# --- Secrets / local config (NEVER commit) ---
+.env
+**/.env
+!.env.example
+!**/.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+**/.venv/
+venv/
+
+# --- Test / tooling caches ---
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Runtime artifacts ---
+*.sqlite3
+jms_mcp_audit.sqlite3
+jms_mcp_batch_results/
+**/jms_mcp_batch_results/
+
+# --- OS / editor ---
+.DS_Store
+**/.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Local Claude Code settings (machine-specific)
+.claude/
+
+# Backup env dumps (contain secrets)
+.env.bak*
+**/.env.bak*
